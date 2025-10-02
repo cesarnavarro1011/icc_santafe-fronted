@@ -121,13 +121,13 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href={currentSlideData.ctaLink}
-            className="px-8 py-3 rounded-full font-semibold bg-[#f5cc00] text-black shadow-lg hover:shadow-xl hover:bg-[#0E34A0] hover:text-white transition-all duration-200 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60"
+            className="px-8 py-3 rounded-full font-semibold bg-[#FFFFFFFF] text-black shadow-lg hover:shadow-xl hover:bg-[#f5cc00] hover:text-white transition-all duration-200 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60"
           >
             {currentSlideData.ctaText}
           </Link>
           <Link
             href="/predicaciones"
-            className="flex items-center space-x-2 px-6 py-3 rounded-full font-semibold bg-[#f5cc00] text-black shadow-lg hover:shadow-xl hover:bg-[#0E34A0] hover:text-white transition-all duration-200 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60"
+            className="flex items-center space-x-2 px-6 py-3 rounded-full font-semibold bg-[#FFFFFFFF] text-black shadow-lg hover:shadow-xl hover:bg-[#f5cc00] hover:text-white transition-all duration-200 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60"
           >
             <Play className="h-5 w-5" />
             <span>Ver Predicaciones</span>

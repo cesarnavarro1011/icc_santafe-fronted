@@ -73,7 +73,7 @@ export default function Header() {
           <div className="hidden lg:block">
             <Link
               href="/quiero-saber-mas"
-              className="relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#FFFFFFFF] text-[#000000FF] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-[#f5cc00] hover:text-[#000000FF] focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60 transition"
+              className="relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#FFFFFFFF] text-[#000000FF] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-[#f5cc00] hover:text-[#FFFFFFFF] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition"
             >
               <span className="relative">Quiero Saber Más</span>
             </Link>
