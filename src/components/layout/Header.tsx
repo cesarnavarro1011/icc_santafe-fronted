@@ -31,6 +31,18 @@ export default function Header() {
 
   const toggleMenu = () => setIsMenuOpen(o => !o);
 
+  // Evitar scroll del body cuando menú móvil está abierto
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const original = document.body.style.overflow;
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = original || '';
+    }
+    return () => { document.body.style.overflow = original || ''; };
+  }, [isMenuOpen]);
+
   const menuItems = [
     { href: '/', label: 'Inicio', spyId: undefined },
     { href: '/#eventos', label: 'Eventos', spyId: 'eventos' },
@@ -121,11 +133,13 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Navigation (overlay) */}
+      {/* Mobile Navigation */}
       <div
-  className={`lg:hidden transition-all duration-300 origin-top ${isMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 pointer-events-none'} bg-[#0b0d0d]/95 backdrop-blur-xl border-t border-white/10`}
+        className={`lg:hidden overflow-hidden transition-[height,opacity] duration-300 ease-[cubic-bezier(.4,0,.2,1)] bg-[#0b0d0d]/95 backdrop-blur-xl border-t border-white/10 ${isMenuOpen ? 'opacity-100' : 'opacity-0'} `}
+        style={{ height: isMenuOpen ? 'auto' as const : 0 }}
+        aria-hidden={!isMenuOpen}
       >
-        <nav className="px-6 py-6 flex flex-col gap-2">
+        <nav className="px-6 py-6 flex flex-col gap-2" role="navigation" aria-label="Menú móvil">
           {(() => {
             return menuItems.map(item => {
               const isHash = item.href.startsWith('/#');
@@ -150,7 +164,7 @@ export default function Header() {
           <Link
             href="/quiero-saber-mas"
             onClick={() => setIsMenuOpen(false)}
-            className="mt-4 relative inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-[#710000] via-[#5a189a] to-[#0E34A0] shadow-md shadow-black/30 ring-1 ring-white/10 hover:shadow-lg hover:shadow-black/50"
+            className="mt-4 relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#f5cc00] text-[#0b0b0d] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-white hover:text-[#5a189a] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition"
           >
             Quiero Saber Más
           </Link>
