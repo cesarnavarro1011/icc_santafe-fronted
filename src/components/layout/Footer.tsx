@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Church, Phone, Mail, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
+import Image from 'next/image';
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -27,10 +28,19 @@ export default function Footer() {
           {/* Logo y Descripción */}
           <div className="col-span-1 lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <Church className="h-8 w-8 text-blue-400" />
+              <span className="relative h-12 w-12 rounded-md overflow-hidden ring-1 ring-white/10 shadow-sm shadow-black/30 flex-shrink-0">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Logo Iglesia"
+                  fill
+                  sizes="100px"
+                  className="object-cover"
+                  priority
+                />
+              </span>
               <div>
-                <h3 className="text-xl font-bold">Iglesia Cristiana</h3>
-                <p className="text-gray-400 text-sm">Una familia en Cristo</p>
+                <h3 className="text-xl font-bold">Iglesa Cuadrangular Santa Fe</h3>
+                <p className="text-gray-400 text-sm">Creciendo en número y en conocimiento</p>
               </div>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
@@ -137,7 +147,10 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © {currentYear} Iglesia Cristiana. Todos los derechos reservados.
+            © {currentYear} Iglesa Cuadrangular Santa Fe. Todos los derechos reservados.
+          </p>
+            <p className="text-gray-400">
+            Created by César Navarro Developer.
           </p>
         </div>
       </div>
