@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useScrollSpy } from '@/lib/useScrollSpy';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
@@ -11,6 +11,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hash, setHash] = useState<string | null>(null);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const prevFocusRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -37,10 +39,49 @@ export default function Header() {
     const original = document.body.style.overflow;
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
+      prevFocusRef.current = document.activeElement as HTMLElement;
+      // Focus first focusable inside menu
+      requestAnimationFrame(() => {
+        const first = mobileMenuRef.current?.querySelector<HTMLElement>('a, button');
+        first?.focus();
+      });
     } else {
       document.body.style.overflow = original || '';
+      if (prevFocusRef.current) {
+        prevFocusRef.current.focus();
+      }
     }
     return () => { document.body.style.overflow = original || ''; };
+  }, [isMenuOpen]);
+
+  // Focus trap & ESC close
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false);
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusables = mobileMenuRef.current?.querySelectorAll<HTMLElement>('a, button');
+        if (!focusables || focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
   }, [isMenuOpen]);
 
   const menuItems = [
@@ -126,7 +167,9 @@ export default function Header() {
           <button
             onClick={toggleMenu}
             aria-label="Abrir menú"
-            className="lg:hidden p-2 rounded-md text-gray-200 hover:text-[#f5cc00] hover:bg-white/5 transition"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            className="lg:hidden p-2 rounded-md text-gray-200 hover:text-[#f5cc00] hover:bg-white/5 transition focus:outline-none focus:ring-2 focus:ring-[#f5cc00]/60"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -135,13 +178,15 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       <div
+        ref={mobileMenuRef}
+        id="mobile-menu"
         className={`lg:hidden overflow-hidden transition-[height,opacity] duration-300 ease-[cubic-bezier(.4,0,.2,1)] bg-[#0b0d0d]/95 backdrop-blur-xl border-t border-white/10 ${isMenuOpen ? 'opacity-100' : 'opacity-0'} `}
         style={{ height: isMenuOpen ? 'auto' as const : 0 }}
         aria-hidden={!isMenuOpen}
       >
         <nav className="px-6 py-6 flex flex-col gap-2" role="navigation" aria-label="Menú móvil">
           {(() => {
-            return menuItems.map(item => {
+            return menuItems.map((item, index) => {
               const isHash = item.href.startsWith('/#');
               let activeRoute = !isHash && pathname === item.href && item.href !== '/';
               if (item.href === '/' && activeSpyId === HERO_SENTINEL) activeRoute = true;
@@ -153,7 +198,8 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`rounded-md px-4 py-2.5 text-sm font-medium transition flex items-center justify-between ${active ? 'bg-white/10 text-white' : 'text-gray-300 hover:text-[#f5cc00] hover:bg-white/5'} ${spyActive ? 'ring-1 ring-white/10 bg-gradient-to-r from-[#710000]/70 via-[#5a189a]/70 to-[#0E34A0]/70 text-white shadow-md shadow-black/30' : ''}`}
+                  className={`rounded-md px-4 py-2.5 text-sm font-medium transition flex items-center justify-between opacity-0 translate-y-2 animate-mobile-menu-item ${active ? 'bg-white/10 text-white' : 'text-gray-300 hover:text-[#f5cc00] hover:bg-white/5'} ${spyActive ? 'ring-1 ring-white/10 bg-gradient-to-r from-[#710000]/70 via-[#5a189a]/70 to-[#0E34A0]/70 text-white shadow-md shadow-black/30' : ''}`}
+                  style={{ animationDelay: `${index * 55}ms` }}
                 >
                   {item.label}
                   {active && <span className="ml-3 h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500" />}
@@ -164,7 +210,8 @@ export default function Header() {
           <Link
             href="/quiero-saber-mas"
             onClick={() => setIsMenuOpen(false)}
-            className="mt-4 relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#f5cc00] text-[#0b0b0d] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-white hover:text-[#5a189a] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition"
+            className="mt-4 relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#f5cc00] text-[#0b0b0d] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-white hover:text-[#5a189a] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition opacity-0 translate-y-2 animate-mobile-menu-item"
+            style={{ animationDelay: `${menuItems.length * 55}ms` }}
           >
             Quiero Saber Más
           </Link>

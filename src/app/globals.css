@@ -34,6 +34,16 @@ body {
   line-height: 1.6;
 }
 
+/* Animación stagger para items del menú móvil */
+@keyframes mobileMenuFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-mobile-menu-item {
+  animation: mobileMenuFadeIn 0.45s cubic-bezier(.4,0,.2,1) forwards;
+}
+
 /* Utilidades personalizadas */
 .line-clamp-2 {
   display: -webkit-box;
