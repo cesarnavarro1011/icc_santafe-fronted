@@ -23,7 +23,7 @@ const heroSlides: HeroSlide[] = [
     title: 'Bienvenidos a Nuestra Familia',
     subtitle: 'Una comunidad unida en Cristo',
     description: 'Descubre el amor de Dios y forma parte de una familia que crece junta en la fe, esperanza y amor.',
-    imageUrl: '/api/placeholder/1200/600', // Placeholder - reemplazar con imagen real
+    imageUrl: '/images/hero1.jpg', // Placeholder - reemplazar con imagen real
     ctaText: 'Únete a Nosotros',
     ctaLink: '/quiero-saber-mas',
     isActive: true,
@@ -140,13 +140,13 @@ export default function Hero() {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 text-white p-3 rounded-full hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10  bg-opacity-20 text-white p-3 rounded-full hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 text-white p-3 rounded-full hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-opacity-20 text-white p-3 rounded-full hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
@@ -155,12 +155,12 @@ export default function Hero() {
 
       {/* Slide Indicators */}
       {activeSlides.length > 1 && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 flex space-x-2">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 flex space-x-2">
           {activeSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+              className={`w-2 h-2 rounded-full transition-all duration-200 ${
                 index === currentSlide
                   ? 'bg-white'
                   : 'bg-white bg-opacity-50 hover:bg-opacity-75'
@@ -171,9 +171,9 @@ export default function Hero() {
       )}
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white border-opacity-50 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white bg-opacity-50 rounded-full mt-2"></div>
+      <div className="mb-5 absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+        <div className="w-6 h-10 border-2 border-gray-100 border-opacity-50 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-gray-100 bg-opacity-50 rounded-full mt-2"></div>
         </div>
       </div>
     </section>

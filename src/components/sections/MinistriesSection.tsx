@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Users, Clock, Mail, ChevronRight } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 
 interface Ministry {
   id: string;
@@ -109,12 +110,39 @@ const ministries: Ministry[] = [
 ];
 
 export default function MinistriesSection({ showAll = false }: { showAll?: boolean }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const [showAllMinistries, setShowAllMinistries] = useState(false);
   const activeMinistries = ministries.filter(ministry => ministry.isActive);
-  const displayMinistries = showAll ? activeMinistries : activeMinistries.slice(0, 6);
+  // Mostrar por defecto 6 cards (2 filas de 3)
+  const displayMinistries = showAll || showAllMinistries ? activeMinistries : activeMinistries.slice(0, 6);
+
+  const handleShowAll = () => {
+    setShowAllMinistries(true);
+  };
+  const handleShowLess = () => {
+    setShowAllMinistries(false);
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } 
+  };
+  useEffect(() => {
+    if (showAllMinistries) {
+      const timer = setTimeout(() => {
+        if (gridRef.current) {
+          const rect = gridRef.current.getBoundingClientRect();
+          const targetY = window.scrollY + rect.bottom - window.innerHeight * 0.9;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [showAllMinistries]);
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+  <section ref={sectionRef} id="ministerios" className="py-16 bg-gray-50 scroll-mt-24">
+      {/* Contenedor full-bleed similar a EventsSection */}
+      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 md:px-8 xl:px-12">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -129,79 +157,112 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
         </div>
 
         {/* Ministries Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
           {displayMinistries.map((ministry) => (
-            <div key={ministry.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group">
-              {/* Ministry Image */}
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={ministry.imageUrl}
-                  alt={ministry.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-opacity duration-300"></div>
-              </div>
+            <div
+              key={ministry.id}
+              className="relative group rounded-2xl overflow-hidden aspect-square bg-gray-900 shadow-sm hover:shadow-lg transition-all duration-500 focus-within:ring-2 focus-within:ring-blue-500"
+            >
+              {/* Imagen base */}
+              <Image
+                src={ministry.imageUrl}
+                alt={ministry.name}
+                fill
+                className="object-cover brightness-[0.75] group-hover:brightness-90 scale-105 group-hover:scale-110 transition-transform duration-700 ease-out"
+                sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+              />
 
-              {/* Ministry Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+              {/* Overlay degradado */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
+
+              {/* Título: centrado por defecto, se desplaza arriba a la izquierda en hover */}
+              <div className="absolute z-10 px-4 text-center transition-all duration-500
+                top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                group-hover:top-4 group-hover:left-4 group-hover:-translate-x-0 group-hover:-translate-y-0 group-hover:text-left group-hover:px-0 group-hover:pr-4">
+                <h3 className="text-white text-xl md:text-2xl font-bold drop-shadow-lg leading-snug
+                  transition-all duration-500 group-hover:text-lg md:group-hover:text-xl line-clamp-2">
                   {ministry.name}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
+              </div>
+
+              {/* Contenido que aparece al hover */}
+              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 flex flex-col h-[60%] translate-y-1/2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out bg-gradient-to-t from-black/80 via-black/60 to-transparent">
+                <p className="text-gray-200 text-[11px] md:text-xs mb-2 line-clamp-3">
                   {ministry.description}
                 </p>
-
-                {/* Ministry Details */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Users className="h-4 w-4 mr-2 text-blue-600 flex-shrink-0" />
-                    <span>{ministry.targetAudience}</span>
+                <div className="space-y-1 text-[10px] md:text-[11px] text-gray-300 mb-2">
+                  <div className="flex items-center">
+                    <Users className="h-3.5 w-3.5 mr-2 text-blue-400" />
+                    <span className="truncate">{ministry.targetAudience}</span>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Clock className="h-4 w-4 mr-2 text-blue-600 flex-shrink-0" />
-                    <span>{ministry.schedule}</span>
+                  <div className="flex items-center">
+                    <Clock className="h-3.5 w-3.5 mr-2 text-blue-400" />
+                    <span className="truncate">{ministry.schedule}</span>
                   </div>
-                  <div className="flex items-start text-sm text-gray-600">
-                    <Users className="h-4 w-4 mr-2 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <span>Líder: {ministry.leader}</span>
+                  <div className="flex items-start">
+                    <Users className="h-3.5 w-3.5 mr-2 text-blue-400 mt-0.5" />
+                    <span className="truncate">Líder: {ministry.leader}</span>
                   </div>
                   {ministry.contactEmail && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Mail className="h-4 w-4 mr-2 text-blue-600 flex-shrink-0" />
-                      <a 
+                    <div className="flex items-center">
+                      <Mail className="h-3.5 w-3.5 mr-2 text-blue-400" />
+                      <a
                         href={`mailto:${ministry.contactEmail}`}
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-300 hover:text-blue-200 underline-offset-2 hover:underline truncate"
                       >
                         {ministry.contactEmail}
                       </a>
                     </div>
                   )}
                 </div>
-
-                {/* CTA Button */}
                 <Link
                   href={`/ministerios/${ministry.id}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-center font-medium inline-flex items-center justify-center space-x-2 group"
+                  className="mt-auto inline-flex items-center justify-center gap-1.5 bg-blue-600/90 hover:bg-blue-600 text-white rounded-full px-3.5 py-1.5 text-[11px] md:text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 focus-visible:ring-offset-black/20"
                 >
-                  <span>Más Información</span>
-                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  <span>Ver más</span>
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              {/* Fallback mobile: mostrar todo si no hay hover (touch) */}
+              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 flex flex-col h-[60%] md:hidden bg-gradient-to-t from-black/85 via-black/65 to-transparent">
+                <p className="text-gray-200 text-[11px] mb-2 line-clamp-3">
+                  {ministry.description}
+                </p>
+                <Link
+                  href={`/ministerios/${ministry.id}`}
+                  className="mt-auto inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full px-3.5 py-1.5 text-[11px] font-semibold"
+                >
+                  <span>Ver más</span>
+                  <ChevronRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Show More Button */}
-        {!showAll && activeMinistries.length > 6 && (
+        {/* Show More / Show Less Button */}
+  {!showAll && activeMinistries.length > 6 && (
           <div className="text-center mt-12">
-            <Link
-              href="/ministerios"
-              className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200 inline-flex items-center space-x-2"
-            >
-              <Users className="h-5 w-5" />
-              <span>Ver Todos los Ministerios</span>
-            </Link>
+            {!showAllMinistries ? (
+              <button
+                type="button"
+                onClick={handleShowAll}
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200 inline-flex items-center space-x-2"
+              >
+                <Users className="h-5 w-5" />
+                <span>Ver Todos los Ministerios</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleShowLess}
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200 inline-flex items-center space-x-2"
+              >
+                <Users className="h-5 w-5" />
+                <span>Mostrar Menos</span>
+              </button>
+            )}
           </div>
         )}
 

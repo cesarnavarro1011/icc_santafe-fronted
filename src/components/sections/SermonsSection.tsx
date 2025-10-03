@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Play, Calendar, User, Tag, Search, Filter } from 'lucide-react';
 
 interface Sermon {
@@ -115,20 +116,11 @@ export default function SermonsSection({ showAll = false }: { showAll?: boolean 
     });
   };
 
-  const getVideoId = (url: string) => {
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
-      return match ? match[1] : null;
-    } else if (url.includes('vimeo.com')) {
-      const match = url.match(/vimeo\.com\/(\d+)/);
-      return match ? match[1] : null;
-    }
-    return null;
-  };
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
+  <section id="predicaciones" className="py-16 bg-white scroll-mt-24">
+      {/* Contenedor full-bleed */}
+      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 md:px-8 xl:px-12">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -188,68 +180,71 @@ export default function SermonsSection({ showAll = false }: { showAll?: boolean 
         )}
 
         {/* Sermons Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {displaySermons.map((sermon) => (
-            <div key={sermon.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group">
+            <div key={sermon.id} className="group flex flex-col bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100">
               {/* Thumbnail */}
               <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                <img
+                <Image
                   src={sermon.thumbnailUrl}
                   alt={sermon.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                  priority={false}
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Link
                     href={`/predicaciones/${sermon.id}`}
-                    className="bg-blue-600 text-white p-4 rounded-full hover:bg-blue-700 transition-colors duration-200"
+                    className="bg-blue-600 text-white p-4 rounded-full hover:bg-blue-700 transition-colors duration-200 shadow-md"
                   >
                     <Play className="h-6 w-6 ml-1" />
                   </Link>
                 </div>
-                
-                {/* Play Button Overlay */}
-                <div className="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white p-2 rounded-full">
+                {/* Static Play Icon */}
+                <div className="absolute bottom-4 right-4 bg-black/70 text-white p-2 rounded-full">
                   <Play className="h-4 w-4" />
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="flex flex-col p-5 md:p-6 flex-1">
                 {/* Series Badge */}
                 {sermon.series && (
-                  <div className="mb-3">
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                  <div className="mb-2">
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-[10px] md:text-xs font-medium">
                       {sermon.series}
                     </span>
                   </div>
                 )}
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                   {sermon.title}
                 </h3>
                 
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                <p className="text-gray-600 mb-4 line-clamp-4 text-sm md:text-base">
                   {sermon.description}
                 </p>
 
                 {/* Meta Information */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
+                <div className="space-y-1.5 mb-4 text-xs md:text-sm text-gray-600">
+                  <div className="flex items-center">
                     <User className="h-4 w-4 mr-2 text-blue-600" />
                     <span>{sermon.speaker}</span>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-2 text-blue-600" />
                     <span>{formatDate(sermon.date)}</span>
                   </div>
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-4">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {sermon.tags.slice(0, 3).map((tag, index) => (
                     <span
                       key={index}
-                      className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
+                      className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-[10px] md:text-xs"
                     >
                       <Tag className="h-3 w-3 inline mr-1" />
                       {tag}
@@ -260,7 +255,7 @@ export default function SermonsSection({ showAll = false }: { showAll?: boolean 
                 {/* CTA Button */}
                 <Link
                   href={`/predicaciones/${sermon.id}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-center font-medium inline-flex items-center justify-center space-x-2"
+                  className="mt-auto w-full bg-blue-600 text-white py-2.5 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-center font-semibold text-sm md:text-base inline-flex items-center justify-center space-x-2"
                 >
                   <Play className="h-4 w-4" />
                   <span>Ver Predicación</span>

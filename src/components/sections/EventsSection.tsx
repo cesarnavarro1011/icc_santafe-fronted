@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Clock, MapPin, Users, Filter } from 'lucide-react';
@@ -101,14 +101,25 @@ const categoryColors = {
   conferencia: 'bg-red-100 text-red-800'
 };
 
+
 export default function EventsSection({ showAll = false }: { showAll?: boolean }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
-  
+  const [showAllEvents, setShowAllEvents] = useState(false);
+
   const filteredEvents = events.filter(event => 
     selectedCategory === 'todos' || event.category === selectedCategory
   );
 
-  const displayEvents = showAll ? filteredEvents : filteredEvents.slice(0, 4);
+  // Mostrar solo la primera fila por defecto, según el número de columnas
+  let maxPerRow = 1;
+  if (typeof window !== 'undefined') {
+    if (window.innerWidth >= 1280) maxPerRow = 4; // xl:grid-cols-4
+    else if (window.innerWidth >= 1024) maxPerRow = 3; // lg:grid-cols-3
+    else if (window.innerWidth >= 640) maxPerRow = 2; // sm:grid-cols-2
+  }
+  const displayEvents = showAll || showAllEvents ? filteredEvents : filteredEvents.slice(0, maxPerRow);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -120,9 +131,37 @@ export default function EventsSection({ showAll = false }: { showAll?: boolean }
     });
   };
 
+  const handleShowAll = () => {
+    setShowAllEvents(true);
+  };
+  const handleShowLess = () => {
+    setShowAllEvents(false);
+    // Desplazar suavemente al inicio de la sección
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Cuando se expande, hacer scroll un poco más abajo para mostrar las nuevas filas
+  useEffect(() => {
+    if (showAllEvents) {
+      // esperar a que el DOM pinte los nuevos elementos
+      const timer = setTimeout(() => {
+        if (gridRef.current) {
+          const rect = gridRef.current.getBoundingClientRect();
+            // desplazamos hacia la parte inferior del grid menos un offset para contexto
+          const targetY = window.scrollY + rect.bottom - window.innerHeight * 0.9;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [showAllEvents]);
+
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
+  <section ref={sectionRef} id="eventos" className="py-16 bg-white scroll-mt-24">
+      {/* Contenedor full-bleed controlado: usamos w-screen centrado para eliminar márgenes laterales */}
+      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 md:px-8 xl:px-12">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -167,16 +206,16 @@ export default function EventsSection({ showAll = false }: { showAll?: boolean }
         )}
 
         {/* Events Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {displayEvents.map((event) => (
-            <div key={event.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+            <div key={event.id} className="group flex flex-col bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100">
               {/* Event Image */}
-              <div className="relative h-48">
+              <div className="relative h-44 md:h-48 lg:h-52 overflow-hidden">
                 <Image
                   src={event.imageUrl}
                   alt={event.title}
                   fill
-                  className="object-cover"
+                  className="object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
                 <div className="absolute top-4 left-4">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColors[event.category]}`}>
@@ -190,26 +229,26 @@ export default function EventsSection({ showAll = false }: { showAll?: boolean }
                 )}
               </div>
 
-              {/* Event Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+              {/* Event Content - grow para igualar alturas */}
+              <div className="flex flex-col p-5 md:p-6 flex-1">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                   {event.title}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                <p className="text-gray-600 mb-4 line-clamp-4 text-sm md:text-base">
                   {event.description}
                 </p>
 
                 {/* Event Details */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
+                <div className="space-y-1.5 mb-4 text-xs md:text-sm text-gray-600">
+                  <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-2 text-blue-600" />
                     <span>{formatDate(event.date)}</span>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center">
                     <Clock className="h-4 w-4 mr-2 text-blue-600" />
                     <span>{event.time}</span>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2 text-blue-600" />
                     <span>{event.location}</span>
                   </div>
@@ -218,7 +257,7 @@ export default function EventsSection({ showAll = false }: { showAll?: boolean }
                 {/* CTA Button */}
                 <Link
                   href={`/eventos/${event.id}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-center font-medium inline-block"
+                  className="mt-auto w-full bg-blue-600 text-white py-2.5 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-center font-semibold text-sm md:text-base"
                 >
                   Más Información
                 </Link>
@@ -227,16 +266,28 @@ export default function EventsSection({ showAll = false }: { showAll?: boolean }
           ))}
         </div>
 
-        {/* Show More Button */}
+        {/* Show More / Show Less Button */}
         {!showAll && filteredEvents.length > 4 && (
           <div className="text-center mt-8">
-            <Link
-              href="/eventos"
-              className="bg-gray-200 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-300 transition-colors duration-200 inline-flex items-center space-x-2"
-            >
-              <Users className="h-5 w-5" />
-              <span>Ver Todos los Eventos</span>
-            </Link>
+            {!showAllEvents ? (
+              <button
+                type="button"
+                onClick={handleShowAll}
+                className="bg-gray-200 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-300 transition-colors duration-200 inline-flex items-center space-x-2"
+              >
+                <Users className="h-5 w-5" />
+                <span>Ver Todos los Eventos</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleShowLess}
+                className="bg-gray-200 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-300 transition-colors duration-200 inline-flex items-center space-x-2"
+              >
+                <Users className="h-5 w-5" />
+                <span>Mostrar Menos</span>
+              </button>
+            )}
           </div>
         )}
 

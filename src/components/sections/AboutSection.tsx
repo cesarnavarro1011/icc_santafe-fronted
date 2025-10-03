@@ -66,8 +66,9 @@ export default function AboutSectionAlt() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-100/40 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      {/* Encabezado centrado con márgenes */}
+      <div className="container mx-auto px-4 relative mb-30">
+        <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-4">
             ¿Quiénes Somos?
           </h2>
@@ -75,71 +76,75 @@ export default function AboutSectionAlt() {
             Conoce nuestra identidad, propósito y fundamentos. Un vistazo claro y ordenado de lo que creemos y hacia dónde caminamos.
           </p>
         </div>
+      </div>
 
-        <div className="space-y-16">
-          {items.map((item, idx) => (
-            <div
-              key={item.title}
-              className={`relative flex flex-col md:flex-row gap-10 md:gap-14 items-stretch md:items-center ${idx % 2 === 1 ? "md:flex-row-reverse" : ""}`}
-            >
-              {/* Imagen */}
-              <div className="md:w-1/2 relative group">
-                <div
-                  className={
-                    `absolute -inset-2 rounded-3xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition duration-500 blur-md ` +
-                    (idx === 0
-                      ? 'from-blue-500/30 to-indigo-500/30'
-                      : idx === 1
-                        ? 'from-green-500/30 to-emerald-500/30'
-                        : 'from-rose-500/30 to-pink-500/30')
-                  }
+      {/* Contenido principal - ancho completo para imágenes */}
+      <div className="space-y-16">
+        {items.map((item, idx) => (
+          <div
+            key={item.title}
+            className={`relative flex flex-col ${idx % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"}`}
+          >
+            {/* Imagen - ancho completo sin márgenes */}
+            <div className="md:w-1/2 relative group">
+              <div
+                className={
+                  `absolute -inset-2 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition duration-500 blur-md ` +
+                  (idx === 0
+                    ? 'from-blue-500/30 to-indigo-500/30'
+                    : idx === 1
+                      ? 'from-green-500/30 to-emerald-500/30'
+                      : 'from-rose-500/30 to-pink-500/30')
+                }
+              />
+              <div className="relative overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={900}
+                  height={650}
+                  className="object-cover h-80 w-full md:h-96 lg:h-[500px] scale-[1.02] group-hover:scale-[1.06] transition-transform duration-700 ease-out"
+                  priority={idx === 0}
                 />
-                <div className="relative rounded-3xl overflow-hidden shadow-md shadow-black/10 ring-1 ring-black/5">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={900}
-                    height={650}
-                    className="object-cover h-64 w-full md:h-72 lg:h-80 scale-[1.02] group-hover:scale-[1.06] transition-transform duration-700 ease-out"
-                    priority={idx === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-                  <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-medium text-white bg-black/40 backdrop-blur-md flex items-center gap-1">
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute top-6 left-6 px-4 py-2 rounded-full text-sm font-medium text-white bg-black/40 backdrop-blur-md flex items-center gap-2">
+                  {item.icon}
+                  <span>{item.title}</span>
                 </div>
-              </div>
-
-              {/* Contenido */}
-              <div className="md:w-1/2 flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 mb-4">
-                  <span className={`h-10 w-10 inline-flex items-center justify-center rounded-xl bg-gradient-to-br ${item.accent} text-white shadow`}>
-                    {item.icon}
-                  </span>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{item.title}</h3>
-                </div>
-                <p className="text-gray-600 leading-relaxed mb-6">
-                  {item.text}
-                </p>
-                {item.title === "Nuestros Valores" && (
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm md:text-base">
-                    {aboutData.values.list.map((value, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="mt-2 block w-2 h-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500" />
-                        <span className="text-gray-700 leading-snug">{value}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Contenido - con márgenes y padding */}
+            <div className="md:w-1/2 flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
+              <div className="inline-flex items-center gap-2 mb-6">
+                <span className={`h-12 w-12 inline-flex items-center justify-center rounded-xl bg-gradient-to-br ${item.accent} text-white shadow-lg`}>
+                  {item.icon}
+                </span>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">{item.title}</h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                {item.text}
+              </p>
+              {item.title === "Nuestros Valores" && (
+                <ul className="grid grid-cols-1 gap-y-4 text-base md:text-lg">
+                  {aboutData.values.list.map((value, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="mt-2 block w-3 h-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 flex-shrink-0" />
+                      <span className="text-gray-700 leading-relaxed">{value}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
-              {/* Statistics - Full width */}
+
+      {/* Estadísticas con contenedor */}
+      <div className="container mx-auto px-4 relative">
+        {/* Statistics - Full width */}
         <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 mt-2 bg-black rounded-xl p-6 md:p-8 text-white mt-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
               <Users className="h-9 w-9 mx-auto mb-2 text-blue-200" />
               <div className="text-3xl md:text-4xl font-bold mb-1">500+</div>
@@ -162,6 +167,7 @@ export default function AboutSectionAlt() {
             </div>
           </div>
         </div>
+      </div>
 
         {/* Call to Action */}
         {/* <div className="mt-12 text-center">
