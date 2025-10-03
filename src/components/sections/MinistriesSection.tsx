@@ -142,7 +142,7 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
   return (
   <section ref={sectionRef} id="ministerios" className="py-16 bg-gray-50 scroll-mt-24">
       {/* Contenedor full-bleed similar a EventsSection */}
-      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 md:px-8 xl:px-12">
+      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 ">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -157,7 +157,7 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
         </div>
 
         {/* Ministries Grid */}
-  <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
+  <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-2">
           {displayMinistries.map((ministry) => (
             <div
               key={ministry.id}
@@ -176,10 +176,10 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
 
               {/* Título: centrado por defecto, se desplaza arriba a la izquierda en hover */}
-              <div className="absolute z-10 px-4 text-center transition-all duration-500
+              <div className="absolute z-10 px-4 text-center transition-all duration-200
                 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                 group-hover:top-4 group-hover:left-4 group-hover:-translate-x-0 group-hover:-translate-y-0 group-hover:text-left group-hover:px-0 group-hover:pr-4">
-                <h3 className="text-white text-xl md:text-2xl font-bold drop-shadow-lg leading-snug
+                <h3 className="text-white text-md lg:text-xl font-bold drop-shadow-lg leading-snug
                   transition-all duration-500 group-hover:text-lg md:group-hover:text-xl line-clamp-2">
                   {ministry.name}
                 </h3>
@@ -218,6 +218,7 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
                 <Link
                   href={`/ministerios/${ministry.id}`}
                   className="mt-auto inline-flex items-center justify-center gap-1.5 bg-blue-600/90 hover:bg-blue-600 text-white rounded-full px-3.5 py-1.5 text-[11px] md:text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 focus-visible:ring-offset-black/20"
+                  aria-label={`Ver más del ${ministry.name}`}
                 >
                   <span>Ver más</span>
                   <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -232,6 +233,7 @@ export default function MinistriesSection({ showAll = false }: { showAll?: boole
                 <Link
                   href={`/ministerios/${ministry.id}`}
                   className="mt-auto inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full px-3.5 py-1.5 text-[11px] font-semibold"
+                  aria-label={`Ver más del ${ministry.name}`}
                 >
                   <span>Ver más</span>
                   <ChevronRight className="h-4 w-4" />
