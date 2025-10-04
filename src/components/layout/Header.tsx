@@ -89,8 +89,8 @@ export default function Header() {
     { href: '/#eventos', label: 'Eventos', spyId: 'eventos' },
     { href: '/#predicaciones', label: 'Predicaciones', spyId: 'predicaciones' },
     { href: '/#ministerios', label: 'Ministerios', spyId: 'ministerios' },
+    { href: '/cursos', label: 'Cursos', spyId: undefined },
     { href: '/nosotros', label: 'Quiénes Somos', spyId: undefined },
-    { href: '/contacto', label: 'Contacto', spyId: undefined },
   ];
 
   const activeSpyId = useScrollSpy({ ids: ['eventos','predicaciones','ministerios'], offset: 0, minRatio: 0.1, threshold: [0,0.1,0.25,0.5,0.75,1], rootMargin: '0px 0px -45% 0px' });
