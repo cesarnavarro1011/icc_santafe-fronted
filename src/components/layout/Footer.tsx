@@ -52,7 +52,7 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-blue-400 flex-shrink-0" />
-                <p className="text-gray-300">Calle Principal #123, Ciudad, País</p>
+                <p className="text-gray-300">Carrera 43 #16-05 Barrio Santa Fe</p>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-blue-400 flex-shrink-0" />

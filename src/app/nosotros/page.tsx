@@ -4,6 +4,7 @@ import AboutSection from '@/components/sections/AboutSection';
 import StatsSection from '@/components/sections/StatsSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import { SimpleBreadcrumbs } from '@/components/ui/Breadcrumbs';
+import Image from 'next/image';
 
 export default function NosotrosPage() {
   return (
@@ -12,16 +13,37 @@ export default function NosotrosPage() {
       <SimpleBreadcrumbs current="Quiénes Somos" />
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-          <div className="container mx-auto px-4">
+        <section className="relative isolate overflow-hidden text-white py-24 md:py-28">
+          {/* Imagen de fondo */}
+          <Image 
+            src="/images/hero1.jpg" 
+            alt="Nuestra congregación" 
+            fill 
+            priority
+            className="object-cover object-center absolute inset-0 -z-20" 
+          />
+          {/* Capa degradado oscura para legibilidad */}
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
+          {/* Decoración ligera (blur) */}
+          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-blue-600/30 blur-3xl -z-10" />
+          <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-purple-700/30 blur-3xl -z-10" />
+          <div className="relative container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Nuestra Historia, Nuestra Fe
+              <span className="inline-block mb-4 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1 text-xs font-semibold tracking-wider uppercase">Quiénes Somos</span>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                Nuestra Historia, <span className="bg-gradient-to-r from-blue-400 to-purple-300 bg-clip-text text-transparent">Nuestra Fe</span>
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100">
-                Conoce más sobre quiénes somos, qué creemos y cómo Dios nos ha guiado 
-                a lo largo de estos años de ministerio y servicio a la comunidad.
+              <p className="text-lg md:text-2xl text-gray-200/90 leading-relaxed">
+                Conoce más sobre quiénes somos, qué creemos y cómo Dios nos ha guiado a lo largo de estos años de ministerio y servicio a la comunidad.
               </p>
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#historia" className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold bg-white text-gray-900 shadow-md shadow-black/30 hover:shadow-lg hover:bg-blue-50 transition">
+                  Ver Historia
+                </a>
+                <a href="#equipo" className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-md shadow-black/30 transition">
+                  Nuestro Equipo
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -30,7 +52,7 @@ export default function NosotrosPage() {
         <StatsSection />
         
         {/* Historia Section */}
-        <section className="py-16 bg-white">
+  <section id="historia" className="py-16 bg-white scroll-mt-24">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
@@ -85,7 +107,7 @@ export default function NosotrosPage() {
         </section>
 
         {/* Leadership Team */}
-        <section className="py-16 bg-gray-50">
+  <section id="equipo" className="py-16 bg-gray-50 scroll-mt-24">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
               Nuestro Equipo Pastoral

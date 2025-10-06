@@ -14,7 +14,7 @@ interface Event {
   location: string;
   imageUrl: string;
   isRecurring: boolean;
-  category: 'servicio' | 'evento-especial' | 'ministerio' | 'conferencia';
+  category: 'servicio' | 'evento-especial' | 'ministerio' | 'conferencia' | 'actividad-juvenil';
 }
 
 // Datos de ejemplo - en producción vendrían del backend
@@ -26,20 +26,20 @@ const events: Event[] = [
     date: '2025-10-05',
     time: '10:00 AM',
     location: 'Santuario Principal',
-    imageUrl: '/api/placeholder/400/250',
+    imageUrl: '/images/servicioDominical.jpg',
     isRecurring: true,
     category: 'servicio'
   },
   {
     id: '2',
-    title: 'Conferencia de Jóvenes 2025',
-    description: 'Un encuentro especial para jóvenes con música, predicación y actividades dinámicas.',
+    title: 'Actividad Juvenil',
+    description: 'Una Actividad especial para jóvenes con música, predicación y actividades dinámicas.',
     date: '2025-10-15',
     time: '7:00 PM',
     location: 'Auditorio Central',
-    imageUrl: '/api/placeholder/400/250',
+    imageUrl: '/images/ministerioJovenes.jpg',
     isRecurring: false,
-    category: 'conferencia'
+    category: 'actividad-juvenil'
   },
   {
     id: '3',
@@ -48,7 +48,7 @@ const events: Event[] = [
     date: '2025-10-20',
     time: '6:00 PM',
     location: 'Centro de Retiros Monte Sión',
-    imageUrl: '/api/placeholder/400/250',
+    imageUrl: '/images/retiroParejas.jpg',
     isRecurring: false,
     category: 'evento-especial'
   },
@@ -70,20 +70,20 @@ const events: Event[] = [
     date: '2025-10-12',
     time: '7:00 PM',
     location: 'Santuario Principal',
-    imageUrl: '/api/placeholder/400/250',
+    imageUrl: '/images/nocheAdoracion.jpg',
     isRecurring: false,
     category: 'evento-especial'
   },
   {
     id: '6',
-    title: 'Escuela Dominical Infantil',
-    description: 'Enseñanza bíblica especialmente diseñada para niños de 4 a 12 años.',
-    date: '2025-10-05',
+    title: 'Congreso de Mujeres 2025',
+    description: 'Mujeres empoderadas para vivir su propósito en Cristo.',
+    date: '2025-11-05',
     time: '9:00 AM',
     location: 'Aulas Infantiles',
-    imageUrl: '/api/placeholder/400/250',
+    imageUrl: '/images/congresoMujeres.jpg',
     isRecurring: true,
-    category: 'ministerio'
+    category: 'evento-especial'
   }
 ];
 
@@ -91,14 +91,16 @@ const categoryLabels = {
   servicio: 'Servicio',
   'evento-especial': 'Evento Especial',
   ministerio: 'Ministerio',
-  conferencia: 'Conferencia'
+  conferencia: 'Conferencia',
+  'actividad-juvenil': 'Actividad Juvenil'
 };
 
 const categoryColors = {
   servicio: 'bg-blue-100 text-blue-800',
   'evento-especial': 'bg-purple-100 text-purple-800',
   ministerio: 'bg-green-100 text-green-800',
-  conferencia: 'bg-red-100 text-red-800'
+  conferencia: 'bg-red-100 text-red-800',
+  'actividad-juvenil': 'bg-yellow-100 text-yellow-800'
 };
 
 
