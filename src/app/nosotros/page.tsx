@@ -107,7 +107,7 @@ export default function NosotrosPage() {
         </section>
 
         {/* Leadership Team */}
-  <section id="equipo" className="py-16 bg-gray-50 scroll-mt-24">
+        <section id="equipo" className="py-16 bg-gray-50 scroll-mt-24">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
               Nuestro Equipo Pastoral

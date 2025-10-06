@@ -51,7 +51,7 @@ export default function AboutSectionAlt() {
     { name: "Helda Sánchez", image: "/images/helda.jpg", alt: "Pastora Helda Sánchez" },
   ];
   const newPastors = [
-    { name: "Nando Rebolledo", image: "/images/nando.jpg", alt: "Pastor Nando Rebolledo" },
+    { name: "Herando Nando Rincón", image: "/images/nando.jpg", alt: "Pastor Nando Rincón" },
     { name: "Liceth Rebolledo", image: "/images/liceth.jpg", alt: "Pastora Liceth Rebolledo" },
   ];
 
@@ -67,18 +67,18 @@ export default function AboutSectionAlt() {
   const newScale = 1;
   const items: AboutItem[] = [
     {
-      title: "Nuestra Visión",
-      text: aboutData.vision.text,
-      image: aboutData.vision.image,
-      icon: <Eye className="h-6 w-6" />,
-      accent: "from-blue-500 to-indigo-500"
-    },
-    {
       title: "Nuestra Misión",
       text: aboutData.mission.text,
       image: aboutData.mission.image,
       icon: <Target className="h-6 w-6" />,
       accent: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Nuestra Visión",
+      text: aboutData.vision.text,
+      image: aboutData.vision.image,
+      icon: <Eye className="h-6 w-6" />,
+      accent: "from-blue-500 to-indigo-500"
     },
     {
       title: "Nuestros Valores",
@@ -177,7 +177,7 @@ export default function AboutSectionAlt() {
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/70 to-black/20" aria-hidden="true" />
           <div className="w-full h-full max-w-6xl mx-auto px-6 md:px-10 pt-14 pb-20 md:pb-24 flex flex-col relative">
             {/* Panel de encabezado mejorado */}
-            <div className="text-center mb-8 md:mb-50 relative z-30">
+            <div className="text-center mb-8 md:mb-48 relative z-30">
               <div className="inline-block px-6  rounded-2xl bg-black/60 backdrop-blur-sm ring-1 ring-white/10 shadow-xl shadow-black/40">
                 <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-3 select-none tracking-tight leading-tight">Liderazgo Pastoral</h3>
                 <p className="text-gray-200 max-w-3xl mx-auto text-base md:text-xl leading-snug select-none">Honramos a quienes sembraron fielmente y abrazamos la nueva temporada que continúa la visión.</p>
