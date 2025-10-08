@@ -36,34 +36,42 @@ const aboutData = {
   }
 };
 
+// Definiciones de pastores para la transición (reemplaza imágenes/nombres según corresponda)
+interface Pastor {
+  name: string;
+  image: string;
+  alt: string;
+}
+
+const oldPastors: Pastor[] = [
+  { name: "Pr. Juan Pérez", image: "/images/hernando.jpg", alt: "Pastor Juan Pérez" },
+  { name: "Pr. María López", image: "/images/helda.jpg", alt: "Pastora María López" }
+];
+
+const newPastors: Pastor[] = [
+  { name: "Pr. Carlos Gómez", image: "/images/nando.jpg", alt: "Pastor Carlos Gómez" },
+  { name: "Pr. Ana Ruiz", image: "/images/liceth.jpg", alt: "Pastora Ana Ruiz" }
+];
+
 export default function AboutSectionAlt() {
-  // Ref para la sección de sucesión pastoral
   const successionRef = useRef<HTMLDivElement | null>(null);
   const reduceMotion = useReducedMotion();
 
-  // Scroll ligado SOLO al bloque de sucesión
+  // Ajusta esta constante según la altura real de tu navbar
+  const NAV_OFFSET = 120; 
+
+  // Revertimos offset al anterior (empieza justo cuando entra el wrapper)
   const { scrollYProgress } = useScroll({
     target: successionRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end 0.1"]
   });
 
-  // Pastores
-  const oldPastors = [
-    { name: "Herando Rincón", image: "/images/herando.jpg", alt: "Pastor Herando Rincón" },
-    { name: "Helda Sánchez", image: "/images/helda.jpg", alt: "Pastora Helda Sánchez" },
-  ];
-  const newPastors = [
-    { name: "Herando Nando Rincón", image: "/images/nando.jpg", alt: "Pastor Nando Rincón" },
-    { name: "Liceth Rebolledo", image: "/images/liceth.jpg", alt: "Pastora Liceth Rebolledo" },
-  ];
+  // Rango ligeramente adelantado
+  const oldOpacityMV = useTransform(scrollYProgress, [0, 0.18, 0.38, 0.55, 1], [1, 1, 0.90, 0.40, 0]);
+  const newOpacityMV = useTransform(scrollYProgress, [0, 0.25, 0.42, 0.62, 1], [0, 0, 0.10, 1, 1]);
+  const oldYMV       = useTransform(scrollYProgress, [0, 0.4, 1], [0, -10, -20]);
+  const newYMV       = useTransform(scrollYProgress, [0, 0.40, 1], [60, -10, -20]);
 
-  // Opacidades y desplazamientos (Hooks SIEMPRE llamados)
-  const oldOpacityMV = useTransform(scrollYProgress, [0, 0.25, 0.45, 0.6, 1], [1, 1, 0.5, 0.15, 0]);
-  const newOpacityMV = useTransform(scrollYProgress, [0, 0.35, 0.5, 0.7, 1], [0, 0, 0.6, 1, 1]);
-  const oldYMV = useTransform(scrollYProgress, [0, 0.4, 1], [0, -40, -60]);
-  const newYMV = useTransform(scrollYProgress, [0, 0.5, 1], [60, 0, 0]);
-
-  // Valores finales según prefers-reduced-motion
   const oldOpacity = reduceMotion ? 1 : oldOpacityMV;
   const newOpacity = reduceMotion ? 1 : newOpacityMV;
   const oldY = reduceMotion ? 0 : oldYMV;
@@ -158,75 +166,69 @@ export default function AboutSectionAlt() {
 
   return (
     <section className="relative space-y-24 bg-white">
-      {/* Transición Pastoral Scroll */}
-      <div
-        ref={successionRef}
-        className="relative h-[170vh] md:h-[160vh] lg:h-[150vh]"
-      >
-        <div className="sticky top-0 h-screen flex flex-col items-center justify-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center tracking-tight text-gray-900">
-            Sucesión Pastoral
-          </h2>
-
-          <div className="relative w-full max-w-5xl mx-auto">
-            {/* Antiguos */}
-            <motion.div
-              style={{ opacity: oldOpacity, y: oldY }}
-              className="absolute inset-0 flex flex-col md:flex-row gap-8 items-center justify-center"
-            >
-              {oldPastors.map(p => (
-                <div key={p.name} className="text-center">
-                  <div className="relative w-44 h-44 rounded-2xl overflow-hidden ring-4 ring-blue-100 shadow-lg">
-                    <Image
-                      src={p.image}
-                      alt={p.alt}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
-                  <p className="text-sm text-gray-500">Pastorado Fundacional</p>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Nuevos */}
-            <motion.div
-              style={{ opacity: newOpacity, y: newY }}
-              className="absolute inset-0 flex flex-col md:flex-row gap-8 items-center justify-center"
-            >
-              {newPastors.map(p => (
-                <div key={p.name} className="text-center">
-                  <div className="relative w-44 h-44 rounded-2xl overflow-hidden ring-4 ring-emerald-100 shadow-lg">
-                    <Image
-                      src={p.image}
-                      alt={p.alt}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
-                  <p className="text-sm text-emerald-600">Pastorado Actual</p>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Gradiente decorativo */}
-            <div className="pointer-events-none absolute -inset-8 rounded-[2.5rem] bg-gradient-to-r from-blue-500/5 via-transparent to-emerald-500/5" />
-          </div>
-
-          <p className="mt-72 md:mt-80 text-sm text-gray-500 tracking-wide">
-            Desplaza para ver la transición
-          </p>
-        </div>
-      </div>
-
       {/* Items */}
       <div className="space-y-16">
         {items.map((item, idx) => (
           <AboutItemCard key={item.title + idx} item={item} idx={idx} />
         ))}
       </div>
+
+      {/* Transición Pastoral Scroll */}
+      <div ref={successionRef} className="relative">
+        {/* Altura más corta y sin padding adicional (reversión) */}
+        <div className="h-[250vh]">
+          <div
+            className="sticky flex flex-col items-center justify-start"
+            style={{
+              top: NAV_OFFSET,
+              height: `calc(100vh - ${NAV_OFFSET}px)`
+            }}
+          >
+            <div className="">
+               {/* Título */}
+              <h2 className="relative z-20 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-5 text-center overflow-hidden ">
+                Sucesión Pastoral
+              </h2>
+              <p className="relative z-20 max-w-2xl text-center text-gray-600 mb-12">honrramos a los pastores que sembraron la base y a los que continúan su legado.</p>
+            </div>
+
+            {/* Contenedor de tarjetas sin margen extra para que queden más arriba */}
+            <div className="relative w-full max-w-5xl mx-auto">
+               {/* Antiguos */}
+               <motion.div
+                 style={{ opacity: oldOpacity, y: oldY }}
+                 className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
+               >
+                 {oldPastors.map(p => (
+                   <div key={p.name} className="text-center">
+                     <div className="relative w-60 h-60 rounded-2xl ring-4 ring-blue-100 shadow-lg">
+                       <Image src={p.image} alt={p.alt} fill className="object-cover" />
+                     </div>
+                     <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
+                     <p className="text-sm text-gray-500">Pastorado Fundacional</p>
+                   </div>
+                 ))}
+               </motion.div>
+
+               {/* Nuevos */}
+               <motion.div
+                 style={{ opacity: newOpacity, y: newY }}
+                 className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
+               >
+                 {newPastors.map(p => (
+                   <div key={p.name} className="text-center">
+                     <div className="relative w-60 h-60 rounded-2xl overflow-hidden ring-4 ring-emerald-100 shadow-lg">
+                       <Image src={p.image} alt={p.alt} fill className="object-cover" />
+                     </div>
+                     <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
+                     <p className="text-sm text-emerald-600">Pastorado Actual</p>
+                   </div>
+                 ))}
+               </motion.div>
+             </div>
+           </div>
+         </div>
+       </div>
 
       {/* Estadísticas */}
       <div className="container mx-auto px-4 relative">
