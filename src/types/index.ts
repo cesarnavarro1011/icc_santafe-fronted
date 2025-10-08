@@ -37,6 +37,7 @@ export interface Ministry {
   imageUrl: string;
   targetAudience: string;
   schedule: string;
+  location: string;
   leader: string;
   contactEmail?: string;
   isActive: boolean;

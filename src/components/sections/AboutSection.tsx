@@ -37,6 +37,35 @@ const aboutData = {
 };
 
 export default function AboutSectionAlt() {
+  // Transición pastoral (pin scroll)
+  const successionRef = useRef<HTMLDivElement | null>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: successionRef,
+    // Rango completo (0 cuando top entra, 1 cuando bottom alcanza top)
+    offset: ["start start", "end start"],
+  });
+
+  // Datos (sustituir imágenes reales)
+  const oldPastors = [
+    { name: "Herando Rincón", image: "/images/herando.jpg", alt: "Pastor Herando Rincón" },
+    { name: "Helda Sánchez", image: "/images/helda.jpg", alt: "Pastora Helda Sánchez" },
+  ];
+  const newPastors = [
+    { name: "Herando Nando Rincón", image: "/images/nando.jpg", alt: "Pastor Nando Rincón" },
+    { name: "Liceth Rebolledo", image: "/images/liceth.jpg", alt: "Pastora Liceth Rebolledo" },
+  ];
+
+  // Mapeos de animación (fall back si reduced motion)
+  // Animaciones específicas solicitadas:
+  // Antiguos: opacity 1->0, y 0-> -50px
+  // Nuevos: opacity 0->1, y 50px -> 0
+  // Usamos puntos intermedios para mantener estabilidad antes del cruce.
+  const oldOpacity = reduceMotion ? 1 : useTransform(scrollYProgress, [0, 0.15, 0.45, 0.35, 1], [1, 1, 0.3, 0.1, 0]);
+  const newOpacity = reduceMotion ? 1 : useTransform(scrollYProgress, [0, 0.1, 0.25, 0.5, 1], [0, 0, 0.5, 1, 1]);
+
+  const oldScale = 1;
+  const newScale = 1;
   const items: AboutItem[] = [
     {
       title: "Nuestra Misión",
@@ -44,6 +73,13 @@ export default function AboutSectionAlt() {
       image: aboutData.mission.image,
       icon: <Target className="h-6 w-6" />,
       accent: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Nuestra Visión",
+      text: aboutData.vision.text,
+      image: aboutData.vision.image,
+      icon: <Eye className="h-6 w-6" />,
+      accent: "from-blue-500 to-indigo-500"
     },
     {
       title: "Nuestra Visión",
@@ -162,7 +198,6 @@ export default function AboutSectionAlt() {
             </div>
           </div>
         </div>
-      </div>
 
       {/* Call to Action (comentado) */}
       {/* <div className="mt-12 text-center">
