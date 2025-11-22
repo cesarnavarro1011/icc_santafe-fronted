@@ -5,6 +5,7 @@ import StatsSection from '@/components/sections/StatsSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import { SimpleBreadcrumbs } from '@/components/ui/Breadcrumbs';
 import Image from 'next/image';
+import { Target, Heart, Users } from "lucide-react";
 
 export default function NosotrosPage() {
   return (
@@ -49,7 +50,36 @@ export default function NosotrosPage() {
         </section>
 
         <AboutSection />
-        <StatsSection />
+
+    {/* Estadísticas */}
+      <div className="container mx-auto px-4 relative mt-48 md:mt-0">
+        <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-black rounded-xl p-6 md:p-8 text-white">
+          <div className="py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <Users className="h-9 w-9 mx-auto mb-2 text-blue-200" />
+              <div className="text-3xl md:text-4xl font-bold mb-1">300+</div>
+              <div className="text-sm md:text-lg font-semibold text-blue-200">Miembros Activos</div>
+            </div>
+            <div>
+              <Target className="h-9 w-9 mx-auto mb-2 text-blue-200" />
+              <div className="text-3xl md:text-4xl font-bold mb-1">47</div>
+              <div className="text-sm md:text-lg font-semibold text-blue-200">Años de Ministerio</div>
+            </div>
+            <div>
+              <Heart className="h-9 w-9 mx-auto mb-2 text-blue-200" />
+              <div className="text-3xl md:text-4xl font-bold mb-1">8</div>
+              <div className="text-sm md:text-lg font-semibold text-blue-200">Ministerios Activos</div>
+            </div>
+            <div>
+              <Users className="h-9 w-9 mx-auto mb-2 text-blue-200" />
+              <div className="text-3xl md:text-4xl font-bold mb-1">1000+</div>
+              <div className="text-sm md:text-lg font-semibold text-blue-200">Vidas Transformadas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        {/* <StatsSection /> */}
         
         {/* Historia Section */}
   <section id="historia" className="py-16 bg-white scroll-mt-24">
@@ -114,10 +144,10 @@ export default function NosotrosPage() {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {/* Pastor Principal */}
+              {/* Lider de Jovenes */}
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="bg-gray-200 h-64 flex items-center justify-center">
-                  <p className="text-gray-600">Foto Pastor Principal</p>
+                  <p className="text-gray-600">Foto Lider de Jovenes</p>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -134,7 +164,7 @@ export default function NosotrosPage() {
               {/* Pastora Asociada */}
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="bg-gray-200 h-64 flex items-center justify-center">
-                  <p className="text-gray-600">Foto Pastora Asociada</p>
+                  <p className="text-gray-600">Foto Lider De alabanza</p>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -151,7 +181,7 @@ export default function NosotrosPage() {
               {/* Pastor de Jóvenes */}
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="bg-gray-200 h-64 flex items-center justify-center">
-                  <p className="text-gray-600">Foto Pastor Jóvenes</p>
+                  <p className="text-gray-600">Foto Lider de Intersección</p>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">

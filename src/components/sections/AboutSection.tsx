@@ -44,13 +44,13 @@ interface Pastor {
 }
 
 const oldPastors: Pastor[] = [
-  { name: "Pr. Juan Pérez", image: "/images/hernando.jpg", alt: "Pastor Juan Pérez" },
-  { name: "Pr. María López", image: "/images/helda.jpg", alt: "Pastora María López" }
+  { name: "Pr. Hernando Rincón", image: "/images/hernando.jpg", alt: "Pastor Hernando Rincón" },
+  { name: "Pr. Helda Sanchez", image: "/images/helda.jpg", alt: "Pastora Helda Sanchez" }
 ];
 
 const newPastors: Pastor[] = [
-  { name: "Pr. Carlos Gómez", image: "/images/nando.jpg", alt: "Pastor Carlos Gómez" },
-  { name: "Pr. Ana Ruiz", image: "/images/liceth.jpg", alt: "Pastora Ana Ruiz" }
+  { name: "Pr. Nando Ricón", image: "/images/nando.jpg", alt: "Pastor Nando Ricón" },
+  { name: "Pr. Liceth Rebolledo", image: "/images/liceth.jpg", alt: "Pastora Liceth Rebolledo" }
 ];
 
 export default function AboutSectionAlt() {
@@ -67,10 +67,10 @@ export default function AboutSectionAlt() {
   });
 
   // Rango ligeramente adelantado
-  const oldOpacityMV = useTransform(scrollYProgress, [0, 0.18, 0.38, 0.55, 1], [1, 1, 0.90, 0.40, 0]);
-  const newOpacityMV = useTransform(scrollYProgress, [0, 0.25, 0.42, 0.62, 1], [0, 0, 0.10, 1, 1]);
-  const oldYMV       = useTransform(scrollYProgress, [0, 0.4, 1], [0, -10, -20]);
-  const newYMV       = useTransform(scrollYProgress, [0, 0.40, 1], [60, -10, -20]);
+const oldOpacityMV = useTransform(scrollYProgress, [0, 0.18, 0.38, 0.55, 1], [1, 1, 0.90, 0.20, 0]); 
+const newOpacityMV = useTransform(scrollYProgress, [0, 0.25, 0.42, 0.62, 1], [0, 0, 0.10, 1, 1]); 
+const oldYMV = useTransform(scrollYProgress, [0, 0.4, 1], [0, -10, -20]); 
+const newYMV = useTransform(scrollYProgress, [0, 0.40, 1], [60, -10, -20]);
 
   const oldOpacity = reduceMotion ? 1 : oldOpacityMV;
   const newOpacity = reduceMotion ? 1 : newOpacityMV;
@@ -165,7 +165,7 @@ export default function AboutSectionAlt() {
   }
 
   return (
-    <section className="relative space-y-24 bg-white">
+    <section className="relative space-y-30 bg-white">
       {/* Items */}
       <div className="space-y-16">
         {items.map((item, idx) => (
@@ -176,7 +176,7 @@ export default function AboutSectionAlt() {
       {/* Transición Pastoral Scroll */}
       <div ref={successionRef} className="relative">
         {/* Altura más corta y sin padding adicional (reversión) */}
-        <div className="h-[250vh]">
+        <div className="h-[300vh] sm:pb-30">
           <div
             className="sticky flex flex-col items-center justify-start"
             style={{
@@ -184,87 +184,66 @@ export default function AboutSectionAlt() {
               height: `calc(100vh - ${NAV_OFFSET}px)`
             }}
           >
-            <div className="">
                {/* Título */}
-              <h2 className="relative z-20 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-5 text-center overflow-hidden ">
+              <h2 className="relative z-20 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-18 text-center overflow-hidden ">
                 Sucesión Pastoral
               </h2>
-              <p className="relative z-20 max-w-2xl text-center text-gray-600 mb-12">honrramos a los pastores que sembraron la base y a los que continúan su legado.</p>
-            </div>
 
             {/* Contenedor de tarjetas sin margen extra para que queden más arriba */}
             <div className="relative w-full max-w-5xl mx-auto">
-               {/* Antiguos */}
-               <motion.div
-                 style={{ opacity: oldOpacity, y: oldY }}
-                 className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
-               >
-                 {oldPastors.map(p => (
-                   <div key={p.name} className="text-center">
-                     <div className="relative w-60 h-60 rounded-2xl ring-4 ring-blue-100 shadow-lg">
-                       <Image src={p.image} alt={p.alt} fill className="object-cover" />
-                     </div>
-                     <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
-                     <p className="text-sm text-gray-500">Pastorado Fundacional</p>
-                   </div>
-                 ))}
-               </motion.div>
+              {/* Mensaje para pastores antiguos */}
+              <motion.p
+                style={{ opacity: oldOpacity, y: oldY }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="absolute -top-12 left-0 right-0 mx-auto text-center text-base md:text-lg text-yellow-700 font-semibold z-20 pointer-events-none"
+              >
+                Honramos a los pastores que sembraron la base
+              </motion.p>
 
-               {/* Nuevos */}
-               <motion.div
-                 style={{ opacity: newOpacity, y: newY }}
-                 className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
-               >
-                 {newPastors.map(p => (
-                   <div key={p.name} className="text-center">
-                     <div className="relative w-60 h-60 rounded-2xl overflow-hidden ring-4 ring-emerald-100 shadow-lg">
-                       <Image src={p.image} alt={p.alt} fill className="object-cover" />
-                     </div>
-                     <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
-                     <p className="text-sm text-emerald-600">Pastorado Actual</p>
-                   </div>
-                 ))}
-               </motion.div>
-             </div>
-           </div>
-         </div>
-       </div>
+              {/* Mensaje para pastores actuales */}
+              {/* Mensaje para pastores actuales */}
+              <motion.p
+                style={{ opacity: newOpacity, y: newY }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="absolute -top-12 left-0 right-0 mx-auto text-center text-base md:text-lg text-red-700 font-semibold z-20 pointer-events-none"
+              >
+                Y a los que continúan su legado.
+              </motion.p>
+              {/* Antiguos */}
+              <motion.div
+                style={{ opacity: oldOpacity, y: oldY }}
+                className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
+              >
+                {oldPastors.map(p => (
+                  <div key={p.name} className="text-center">
+                    <div className="relative w-60 h-60 rounded-2xl ring-4 ring-blue-100 shadow-lg">
+                      <Image src={p.image} alt={p.alt} fill className="object-cover" />
+                    </div>
+                    <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
+                    <p className="text-sm text-gray-500">Pastorado Fundacional</p>
+                  </div>
+                ))}
+              </motion.div>
 
-      {/* Estadísticas */}
-      <div className="container mx-auto px-4 relative">
-        <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-black rounded-xl p-6 md:p-8 text-white">
-          <div className="py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <Users className="h-9 w-9 mx-auto mb-2 text-blue-200" />
-              <div className="text-3xl md:text-4xl font-bold mb-1">500+</div>
-              <div className="text-sm md:text-lg font-semibold text-blue-200">Miembros Activos</div>
-            </div>
-            <div>
-              <Target className="h-9 w-9 mx-auto mb-2 text-blue-200" />
-              <div className="text-3xl md:text-4xl font-bold mb-1">15</div>
-              <div className="text-sm md:text-lg font-semibold text-blue-200">Años de Ministerio</div>
-            </div>
-            <div>
-              <Heart className="h-9 w-9 mx-auto mb-2 text-blue-200" />
-              <div className="text-3xl md:text-4xl font-bold mb-1">8</div>
-              <div className="text-sm md:text-lg font-semibold text-blue-200">Ministerios Activos</div>
-            </div>
-            <div>
-              <Users className="h-9 w-9 mx-auto mb-2 text-blue-200" />
-              <div className="text-3xl md:text-4xl font-bold mb-1">1000+</div>
-              <div className="text-sm md:text-lg font-semibold text-blue-200">Vidas Transformadas</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-// Fondo blanco para la sección About sin modificar el componente original
-if (typeof document !== 'undefined') {
-  requestAnimationFrame(() => {
-    document
-      .querySelectorAll('section.relative.space-y-24')
-      .forEach(el => el.classList.add('bg-white'));
-  });
-}
+              {/* Nuevos */}
+              <motion.div
+                style={{ opacity: newOpacity, y: newY }}
+                className="absolute inset-x-0 top-0 flex flex-col md:flex-row gap-10 items-center justify-center z-10"
+              >
+                {newPastors.map(p => (
+                  <div key={p.name} className="text-center">
+                    <div className="relative w-60 h-60 overflow-hidden ring-4 ring-emerald-100 shadow-lg">
+                      <Image src={p.image} alt={p.alt} fill className="object-cover" />
+                    </div>
+                    <p className="mt-4 font-semibold text-gray-800">{p.name}</p>
+                    <p className="text-sm text-emerald-600">Pastorado Actual</p>
+                  </div>
+                ))}
+              </motion.div>
+                      </div> {/* /card container */}
+                    </div> {/* /sticky */}
+                  </div> {/* /h-[300vh] */}
+                </div> {/* /relative succession wrapper */}
+              </section>
+            );
+          }

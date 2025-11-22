@@ -125,7 +125,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Subscription */}
-        <div className="border-t border-gray-800 mt-8 pt-8">
+        {/* <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
               <h5 className="text-lg font-semibold mb-2">Suscríbete a nuestro boletín</h5>
@@ -142,7 +142,7 @@ export default function Footer() {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
