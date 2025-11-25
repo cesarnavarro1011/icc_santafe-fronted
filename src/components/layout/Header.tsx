@@ -89,8 +89,8 @@ export default function Header() {
     { href: '/#eventos', label: 'Eventos', spyId: 'eventos' },
     { href: '/#predicaciones', label: 'Predicaciones', spyId: 'predicaciones' },
     { href: '/#ministerios', label: 'Ministerios', spyId: 'ministerios' },
-    { href: '/cursos', label: 'Cursos', spyId: undefined },
     { href: '/nosotros', label: 'Quiénes Somos', spyId: undefined },
+    { href: '/contactanos', label: 'Contáctanos', spyId: undefined },
   ];
 
   const activeSpyId = useScrollSpy({ ids: ['eventos','predicaciones','ministerios'], offset: 0, minRatio: 0.1, threshold: [0,0.1,0.25,0.5,0.75,1], rootMargin: '0px 0px -45% 0px' });
@@ -156,10 +156,10 @@ export default function Header() {
             {/* CTA Button Desktop */}
           <div className="hidden lg:block">
             <Link
-              href="/quiero-saber-mas"
+              href="/login"
               className="relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#FFFFFFFF] text-[#000000FF] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-[#f5cc00] hover:text-[#FFFFFFFF] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition"
             >
-              <span className="relative">Quiero Saber Más</span>
+              <span className="relative">Iniciar Sesión</span>
             </Link>
           </div>
 
@@ -208,12 +208,12 @@ export default function Header() {
             });
           })()}
           <Link
-            href="/quiero-saber-mas"
+            href="/login"
             onClick={() => setIsMenuOpen(false)}
             className="mt-4 relative inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold bg-[#f5cc00] text-[#0b0b0d] shadow-md shadow-black/30 ring-1 ring-[#f5cc00]/30 hover:shadow-lg hover:shadow-black/50 hover:bg-white hover:text-[#5a189a] focus:outline-none focus:ring-2 focus:ring-[#0E34A0]/60 transition opacity-0 translate-y-2 animate-mobile-menu-item"
             style={{ animationDelay: `${menuItems.length * 55}ms` }}
           >
-            Quiero Saber Más
+            Iniciar Sesión
           </Link>
         </nav>
       </div>
